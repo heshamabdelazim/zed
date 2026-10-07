@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZED.com | حلول الواقع المعزز وتطوير Unity الاحترافية</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cairo & Tajawal -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        zed: {
+                            bg: '#080C14',
+                            card: '#0F172A',
+                            accent: '#00F0FF',
+                            purple: '#7C3AED',
+                            pink: '#EC4899',
+                            darkBorder: '#1E293B'
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                        tajawal: ['Tajawal', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'neon-blue': '0 0 25px rgba(0, 240, 255, 0.35)',
+                        'neon-purple': '0 0 25px rgba(124, 58, 237, 0.35)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background-color: #080C14;
+            color: #F8FAFC;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-panel-hover:hover {
+            border-color: rgba(0, 240, 255, 0.4);
+            box-shadow: 0 10px 30px -10px rgba(0, 240, 255, 0.2);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #00F0FF 0%, #3B82F6 50%, #7C3AED 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-purple {
+            background: linear-gradient(135deg, #A855F7 0%, #EC4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #080C14;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1E293B;
+            border-radius: 9999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #00F0FF;
+        }
+    </style>
+</head>
+<body class="custom-scrollbar bg-[#080C14] text-slate-100 antialiased selection:bg-cyan-500 selection:text-black">
+
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-panel border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-purple-600 p-0.5 shadow-neon-blue transition-transform duration-300 group-hover:scale-105">
+                        <div class="w-full h-full bg-[#080C14] rounded-[10px] flex items-center justify-center">
+                            <span class="font-black text-xl tracking-wider text-cyan-400">Z</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black tracking-widest text-white leading-none">ZED<span class="text-cyan-400">.COM</span></span>
+                        <span class="text-[10px] text-slate-400 tracking-wider">AR & UNITY LABS</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
+                    <a href="#services" data-i18n="nav_services" class="hover:text-cyan-400 transition-colors">الخدمات</a>
+                    <a href="#portfolio" data-i18n="nav_portfolio" class="hover:text-cyan-400 transition-colors">معرض الأعمال</a>
+                    <a href="#ar-demo" data-i18n="nav_demo" class="hover:text-cyan-400 transition-colors">العرض التفاعلي</a>
+                    <a href="#estimator" data-i18n="nav_estimator" class="hover:text-cyan-400 transition-colors">حاسبة المشروع</a>
+                    <a href="#why-zed" data-i18n="nav_why" class="hover:text-cyan-400 transition-colors">لماذا ZED؟</a>
+                </nav>
+
+                <!-- Action Button & Language Switcher -->
+                <div class="hidden md:flex items-center gap-3">
+                    <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-3.5 py-2 rounded-xl glass-panel border border-slate-700/80 text-xs font-bold hover:border-cyan-400 text-slate-200 transition-all flex items-center gap-2 group">
+                        <i class="fa-solid fa-globe text-cyan-400 group-hover:rotate-12 transition-transform"></i>
+                        <span id="lang-btn-text">English</span>
+                    </button>
+                    <a href="#contact" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-bold text-sm shadow-neon-blue hover:brightness-110 transition-all duration-300 flex items-center gap-2">
+                        <span data-i18n="nav_cta">ابتدئ مشروعك</span>
+                        <i class="fa-solid fa-arrow-left text-xs rtl-arrow"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile menu toggle -->
+                <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white text-2xl focus:outline-none">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-drawer" class="hidden md:hidden border-t border-slate-800 bg-[#080C14]/95 backdrop-blur-xl px-6 py-6 transition-all">
+            <div class="flex flex-col gap-4 text-base font-semibold">
+                <a href="#services" data-i18n="nav_services" class="mobile-link text-slate-300 hover:text-cyan-400">الخدمات</a>
+                <a href="#portfolio" data-i18n="nav_portfolio" class="mobile-link text-slate-300 hover:text-cyan-400">معرض الأعمال</a>
+                <a href="#ar-demo" data-i18n="nav_demo" class="mobile-link text-slate-300 hover:text-cyan-400">العرض التفاعلي</a>
+                <a href="#estimator" data-i18n="nav_estimator" class="mobile-link text-slate-300 hover:text-cyan-400">حاسبة المشروع</a>
+                <a href="#why-zed" data-i18n="nav_why" class="mobile-link text-slate-300 hover:text-cyan-400">لماذا ZED؟</a>
+                
+                <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between gap-4">
+                    <button onclick="toggleLanguage()" class="w-full py-2.5 px-4 rounded-xl glass-panel border border-slate-700 text-xs font-bold text-slate-200 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-globe text-cyan-400"></i>
+                        <span id="mobile-lang-btn-text">Language: English</span>
+                    </button>
+                </div>
+
+                <a href="#contact" data-i18n="nav_cta" class="mobile-link text-center py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-bold">
+                    ابتدئ مشروعك الآن
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="relative min-h-screen pt-32 pb-20 flex items-center justify-center overflow-hidden">
+        <!-- Interactive Node Grid Canvas Background -->
+        <canvas id="hero-canvas" class="absolute inset-0 w-full h-full z-0 opacity-40 pointer-events-none"></canvas>
+
+        <!-- Dynamic Ambient Light Blobs -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/15 rounded-full blur-[140px] pointer-events-none"></div>
+        <div class="absolute bottom-10 right-10 w-[400px] h-[400px] bg-purple-600/15 rounded-full blur-[140px] pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-cyan-500/30 text-cyan-300 text-xs sm:text-sm font-semibold mb-8 animate-pulse">
+                <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                <span data-i18n="hero_badge">المختبر البرمجي المتقدم لتقنيات Unity والواقع المعزز</span>
+            </div>
+
+            <!-- Headline -->
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight mb-6" data-i18n-html="hero_title">
+                نُشكل المستقبل بـ <span class="text-gradient">تجارب واقع معزز (AR)</span><br class="hidden sm:inline">
+                وحلول Unity متكاملة للأعمال
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="max-w-3xl mx-auto text-base sm:text-lg lg:text-xl text-slate-400 font-normal leading-relaxed mb-10" data-i18n-html="hero_desc">
+                في <strong class="text-white">ZED.com</strong>، ندمج هندسة البرمجيات النظيفة (Clean Code) مع أحدث تقنيات المحاكاة التفاعلية لتطوير تطبيقات هاتفية، حلول تعليمية، وأنظمة تفاعلية مخصصة ترفع من القيمة السوقية لعلامتك التجارية.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-16">
+                <a href="#contact" data-i18n="hero_cta_primary" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 text-black font-extrabold text-base shadow-neon-blue hover:scale-[1.02] transition-transform duration-300">
+                    طلب استشارة وتقييم مشروعك
+                </a>
+                <a href="#ar-demo" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-panel text-white font-bold text-base border border-slate-700 hover:border-cyan-400 hover:bg-slate-800/50 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cube text-cyan-400"></i>
+                    <span data-i18n="hero_cta_secondary">تجربة النموذج التفاعلي</span>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
+                <div class="glass-panel p-6 rounded-2xl text-center border-t-2 border-t-cyan-500">
+                    <span class="block text-3xl sm:text-4xl font-black text-white mb-1 counter" data-target="50">0</span>
+                    <span data-i18n="stat_1" class="text-xs sm:text-sm text-slate-400 font-medium">+ مشروع AR & Unity منجز</span>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl text-center border-t-2 border-t-blue-500">
+                    <span class="block text-3xl sm:text-4xl font-black text-white mb-1 counter" data-target="99">0</span>
+                    <span data-i18n="stat_2" class="text-xs sm:text-sm text-slate-400 font-medium">% جودة واستقرار الأكواد</span>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl text-center border-t-2 border-t-purple-500">
+                    <span class="block text-3xl sm:text-4xl font-black text-white mb-1 counter" data-target="15">0</span>
+                    <span data-i18n="stat_3" class="text-xs sm:text-sm text-slate-400 font-medium">+ قطاع تجاري وتعيلمي</span>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl text-center border-t-2 border-t-pink-500">
+                    <span class="block text-3xl sm:text-4xl font-black text-white mb-1">100%</span>
+                    <span data-i18n="stat_4" class="text-xs sm:text-sm text-slate-400 font-medium">حماية وأمان البيانات</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="services" class="py-24 relative z-10 border-t border-slate-800/80 bg-slate-950/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-3">خدماتنا التقنية</h2>
+                <p class="text-3xl sm:text-5xl font-black text-white mb-4">حلول تفاعلية مصممة بدقة عالية</p>
+                <p class="text-slate-400 text-base sm:text-lg">نستخدم أفضل المحركات والتقنيات لبناء تجارب رقمية غامرة تجمع بين الجاذبية البصرية والأداء البرمجي القوي.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Service 1 -->
+                <div class="glass-panel rounded-2xl p-8 glass-panel-hover transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl mb-6 group-hover:bg-cyan-500 group-hover:text-black transition-all">
+                            <i class="fa-solid fa-vr-cardboard"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">تطبيقات الواقع المعزز (AR)</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                            تطوير تطبيقات تفاعلية تعتمد على تتبع الصور (Image Tracking) الأسطح والأجسام باستخدام AR Foundation و Vuforia، مما يسمح للعملاء بإنشاء معارض منتجات افتراضية وتجارب بصرية فريدة.
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-300 border-t border-slate-800 pt-4">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400"></i> تتبع العناصر 2D & 3D بسرعة فائقة</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400"></i> دعم منصات iOS و Android</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400"></i> دمج مع نظم الدفع والمتاجر الإلكترونية</li>
+                    </ul>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="glass-panel rounded-2xl p-8 glass-panel-hover transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-2xl mb-6 group-hover:bg-purple-500 group-hover:text-black transition-all">
+                            <i class="fa-solid fa-cubes"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">تطوير أنظمة Unity مخصصة</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                            بناء الهندسة البرمجية للمشاريع التفاعلية المعقدة لكتابة كود نظيف وقابل للتوسع باستخدام C# وطرق التصميم البرمجي المتقدمة (Design Patterns).
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-300 border-t border-slate-800 pt-4">
+                        <li class="flex items-center gap-2"><li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-400"></i> هيكلية أكواد نظيفة وسريعة التعديل</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-400"></i> تحسين الأداء ورفع FPS بشكل ممتاز</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-400"></i> بناء Plugins ومودولات مخصصة</li>
+                    </ul>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="glass-panel rounded-2xl p-8 glass-panel-hover transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-pink-400 text-2xl mb-6 group-hover:bg-pink-500 group-hover:text-black transition-all">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">التطبيقات التعليمية والتفاعلية</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                            تحويل المناهج الدراسية والتدريبات المهنية المعقدة إلى مجسمات ومحاكاة ثلاثية الأبعاد تفاعلية تسهل الاستيعاب وتزيد نسبة التفاعل لدى المستخدمين.
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-300 border-t border-slate-800 pt-4">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-400"></i> تجارب محاكاة علمية وطبية دقيقة</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-400"></i> تحفيز الألعاب (Gamification)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-400"></i> إحصائيات وتقارير أداء المستخدمين</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="py-24 relative z-10 border-t border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <h2 class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-3">سجل الإنجازات</h2>
+                    <p class="text-3xl sm:text-5xl font-black text-white">نماذج من أعمال ZED</p>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex flex-wrap gap-2 bg-slate-900/80 p-1.5 rounded-xl border border-slate-800" id="portfolio-filters">
+                    <button data-filter="all" class="filter-btn active px-4 py-2 rounded-lg text-xs font-bold transition-all bg-cyan-500 text-black">الكل</button>
+                    <button data-filter="ar" class="filter-btn px-4 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-all">الواقع المعزز (AR)</button>
+                    <button data-filter="unity" class="filter-btn px-4 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-all">محرك Unity</button>
+                    <button data-filter="edu" class="filter-btn px-4 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-all">تطبيقات تعليمية</button>
+                </div>
+            </div>
+
+            <!-- Portfolio Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-grid">
+                
+                <!-- Project 1 -->
+                <div class="portfolio-item glass-panel rounded-2xl overflow-hidden group border border-slate-800" data-category="ar">
+                    <div class="relative h-56 bg-slate-900 overflow-hidden flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-transparent z-10"></div>
+                        <i class="fa-solid fa-cube text-7xl text-cyan-500/30 group-hover:scale-125 transition-transform duration-500"></i>
+                        <span class="absolute top-4 right-4 z-20 px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">AR Application</span>
+                    </div>
+                    <div class="p-6 relative z-20">
+                        <h3 class="text-xl font-bold text-white mb-2">تطبيق المعرض الافتراضي للأثاث</h3>
+                        <p class="text-slate-400 text-xs mb-4">تمكين العميل من معاينة قطعة الأثاث بمقاساتها الحقيقية في الغرفة عبر الكاميرا باستخدام Unity AR Foundation.</p>
+                        <div class="flex items-center gap-2 text-[11px] font-mono text-cyan-400">
+                            <span>#Unity</span> <span>#AR_Foundation</span> <span>#C#</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="portfolio-item glass-panel rounded-2xl overflow-hidden group border border-slate-800" data-category="edu">
+                    <div class="relative h-56 bg-slate-900 overflow-hidden flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-transparent z-10"></div>
+                        <i class="fa-solid fa-dna text-7xl text-purple-500/30 group-hover:scale-125 transition-transform duration-500"></i>
+                        <span class="absolute top-4 right-4 z-20 px-3 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">Educational Tech</span>
+                    </div>
+                    <div class="p-6 relative z-20">
+                        <h3 class="text-xl font-bold text-white mb-2">منصة أطلس الاحياء التفاعلي</h3>
+                        <p class="text-slate-400 text-xs mb-4">تطبيق تعليمي تفاعلي يتيح للطلاب تفكيك وتشريح الخلية الحيوية بتقنية ثلاثية الأبعاد وطبقات مفصلة.</p>
+                        <div class="flex items-center gap-2 text-[11px] font-mono text-purple-400">
+                            <span>#Interactive_3D</span> <span>#Education</span> <span>#Vuforia</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="portfolio-item glass-panel rounded-2xl overflow-hidden group border border-slate-800" data-category="unity">
+                    <div class="relative h-56 bg-slate-900 overflow-hidden flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-transparent z-10"></div>
+                        <i class="fa-solid fa-industry text-7xl text-pink-500/30 group-hover:scale-125 transition-transform duration-500"></i>
+                        <span class="absolute top-4 right-4 z-20 px-3 py-1 rounded-full text-xs font-bold bg-pink-500/20 text-pink-300 border border-pink-500/30">Unity System</span>
+                    </div>
+                    <div class="p-6 relative z-20">
+                        <h3 class="text-xl font-bold text-white mb-2">محاكي السلامة والصيانة الصناعية</h3>
+                        <p class="text-slate-400 text-xs mb-4">نظام تدريبي للمهندسين والمشغلين للتدريب على التعامل مع أعطال المعدات الثقيلة في بيئة آمنة.</p>
+                        <div class="flex items-center gap-2 text-[11px] font-mono text-pink-400">
+                            <span>#Unity_Engine</span> <span>#Clean_Architecture</span> <span>#Simulation</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section id="ar-demo" class="py-24 relative z-10 border-t border-slate-800/80 bg-slate-950/70">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-5">
+                    <h2 class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-3">عرض مباشر</h2>
+                    <h3 class="text-3xl sm:text-4xl font-black text-white mb-6">جرب معينة المجسمات 3D بشكل حي في متصفحك</h3>
+                    <p class="text-slate-400 text-base leading-relaxed mb-6">
+                        يمكنك التحكم بالمجسم ثلاثي الأبعاد أدناه لتجربة إمكانيات التحكم في محاكاة العناصر قبل تطبيقها داخل تطبيقات الـ AR الخاصة بمشروعك.
+                    </p>
+
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-sm">1</span>
+                            <span class="text-slate-300 text-sm">اسحب بالماوس / اللمس لتدوير المجسم</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-sm">2</span>
+                            <span class="text-slate-300 text-sm">غير أنماط الإضاءة والألوان المخصصة</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center font-bold text-sm">3</span>
+                            <span class="text-slate-300 text-sm">معاينة نمط الـ Wireframe والتفاصيل الهندسية</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3D Interactive Web Canvas Box -->
+                <div class="lg:col-span-7 glass-panel p-4 rounded-3xl border border-slate-800 shadow-2xl relative">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-slate-800 mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+                            <span class="text-xs font-mono text-slate-400 mr-2">ZED_AR_Preview_Engine.exe</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="btn-color-cyan" class="px-2 py-1 rounded text-xs bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">Neon Cyan</button>
+                            <button id="btn-color-purple" class="px-2 py-1 rounded text-xs bg-purple-500/20 text-purple-300 border border-purple-500/40">Purple Wire</button>
+                        </div>
+                    </div>
+
+                    <div class="relative w-full h-[380px] bg-slate-950/90 rounded-2xl overflow-hidden flex items-center justify-center">
+                        <canvas id="interactive-cube-canvas" class="w-full h-full cursor-grab active:cursor-grabbing"></canvas>
+                        
+                        <div class="absolute bottom-4 left-4 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-800 text-[11px] font-mono text-slate-400">
+                            FPS: <span id="fps-counter" class="text-cyan-400 font-bold">60</span> | Mode: Interactive Mesh
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="estimator" class="py-24 relative z-10 border-t border-slate-800/80">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-3">تقدير مبدئي</h2>
+                <p class="text-3xl sm:text-4xl font-black text-white mb-3">حاسبة تكلفة ومدة المشروع</p>
+                <p class="text-slate-400 text-sm">حدد مواصفات التطبيق المطلوبة للحصول على تقدير زمني ومالي مباشر لمشروعك مع ZED.com</p>
+            </div>
+
+            <div class="glass-panel p-6 sm:p-10 rounded-3xl border border-slate-800 shadow-2xl">
+                <form id="calc-form" onsubmit="event.preventDefault();" class="space-y-8">
+                    
+                    <!-- Select 1: Project Type -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-200 mb-3">1. نوع المشروع الرئيسي:</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <label class="calc-option cursor-pointer p-4 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-cyan-500/50 flex items-center gap-3">
+                                <input type="radio" name="project_type" value="1500" checked class="accent-cyan-400">
+                                <span class="text-sm font-semibold text-white">تطبيق AR للموبايل</span>
+                            </label>
+                            <label class="calc-option cursor-pointer p-4 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-cyan-500/50 flex items-center gap-3">
+                                <input type="radio" name="project_type" value="2200" class="accent-cyan-400">
+                                <span class="text-sm font-semibold text-white">نظام Unity مخصص</span>
+                            </label>
+                            <label class="calc-option cursor-pointer p-4 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-cyan-500/50 flex items-center gap-3">
+                                <input type="radio" name="project_type" value="1800" class="accent-cyan-400">
+                                <span class="text-sm font-semibold text-white">منصة تعليمية تفاعلية</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Select 2: Scale/Platforms -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-200 mb-3">2. المنصات المستهدفة:</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <label class="calc-option cursor-pointer p-4 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-cyan-500/50 flex items-center gap-3">
+                                <input type="checkbox" value="500" class="calc-platform accent-cyan-400" checked>
+                                <span class="text-sm text-slate-300">iOS (iPhone / iPad)</span>
+                            </label>
+                            <label class="calc-option cursor-pointer p-4 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-cyan-500/50 flex items-center gap-3">
+                                <input type="checkbox" value="500" class="calc-platform accent-cyan-400" checked>
+                                <span class="text-sm text-slate-300">Android</span>
+                            </label>
+                            <label class="calc-option cursor-pointer p-4 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-cyan-500/50 flex items-center gap-3">
+                                <input type="checkbox" value="800" class="calc-platform accent-cyan-400">
+                                <span class="text-sm text-slate-300">Web Player / WebGL</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Select 3: Additional Features -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-200 mb-3">3. ميزات إضافية:</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <label class="calc-option cursor-pointer p-4 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-cyan-500/50 flex items-center gap-3">
+                                <input type="checkbox" value="600" class="calc-feature accent-cyan-400">
+                                <span class="text-sm text-slate-300">لوحة تحكم وسيرفر خفي (Backend API)</span>
+                            </label>
+                            <label class="calc-option cursor-pointer p-4 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-cyan-500/50 flex items-center gap-3">
+                                <input type="checkbox" value="400" class="calc-feature accent-cyan-400">
+                                <span class="text-sm text-slate-300">تصميم وتجهيز موديلات 3D مخصصة</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Output Estimation Box -->
+                    <div class="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-cyan-950/40 border border-cyan-500/30 flex flex-col sm:flex-row items-center justify-between gap-6">
+                        <div>
+                            <span class="text-xs text-cyan-400 font-bold block mb-1">التقدير التقريبي للمشروع</span>
+                            <div class="flex items-baseline gap-2">
+                                <span id="calc-price" class="text-3xl sm:text-4xl font-black text-white">$2,500</span>
+                                <span class="text-xs text-slate-400">USD (تقريبي)</span>
+                            </div>
+                            <span id="calc-time" class="text-xs text-slate-400 block mt-1">المدة المتوقعة: 3 - 4 أسابيع عمل</span>
+                        </div>
+                        <a href="#contact" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-cyan-500 text-black font-extrabold text-sm text-center shadow-neon-blue hover:brightness-110 transition-all">
+                            تأكيد الطلب والحجز
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="why-zed" class="py-24 relative z-10 border-t border-slate-800/80 bg-slate-950/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-3">القيمة المضافة</h2>
+                <p class="text-3xl sm:text-5xl font-black text-white mb-4">لماذا تختار التعامل مع ZED.com؟</p>
+                <p class="text-slate-400 text-base">نركز على بناء علاقات مستدامة توفر حلولاً تكتيكية دقيقة ومبنية على معايير الجودة العالمية.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div class="glass-panel p-8 rounded-2xl text-right">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">أمان وحماية بياناتك 100%</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        التزام كامل باتفاقيات عدم الافصاح (NDA) وحماية حقوق الملكية الفكرية والشفرة المصدريّة الخاصة ببرمجياتك.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl text-right">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-code-merge"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">أكواد نظيفة وقابلة للتوسع</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        نستخدم هندسة برمجية منظمة تسمح بإضافة أي ميزات مستقبلية وتطوير التطبيق دون الحاجة لنسخ الأكواد القديمة.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl text-right">
+                    <div class="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">تسليم مرن وسريع (MVP)</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        نساعدك على طرح أسرع نموذج أولي قابل للاختبار التجاري لتوفير الوقت وتجربة الاستجابة في السوق المباشر.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section id="contact" class="py-24 relative z-10 border-t border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Info Column -->
+                <div class="lg:col-span-5">
+                    <h2 class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-3">تواصل معنا</h2>
+                    <h3 class="text-3xl sm:text-5xl font-black text-white mb-6">دعنا نحول فكرتك إلى واقع ملموس</h3>
+                    <p class="text-slate-400 text-base leading-relaxed mb-8">
+                        فريق ZED مستعد لمناقشة أفكارك وتقديم استشارة تقنية مجانية لتحديد أفضل الطرق والأدوات لبناء التطبيق الخاص بك.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-cyan-400 text-lg">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block">البريد الإلكتروني المباشر</span>
+                                <a href="mailto:contact@zed.com" class="text-white font-bold hover:text-cyan-400 transition-colors">contact@zed.com</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-purple-400 text-lg">
+                                <i class="fa-solid fa-headset"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block">ساعات الدعم والرد</span>
+                                <span class="text-white font-bold">الأحد - الخميس (9:00 ص - 6:00 م)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Column -->
+                <div class="lg:col-span-7">
+                    <div class="glass-panel p-8 sm:p-10 rounded-3xl border border-slate-800 shadow-2xl">
+                        
+                        <!-- Notification Toast inside form -->
+                        <div id="form-toast" class="hidden mb-6 p-4 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-sm font-semibold text-center">
+                            <i class="fa-solid fa-circle-check ml-2"></i> تم استلام طلبك بنجاح! وسيتواصل معك مهندسنا الفني خلال 24 ساعة.
+                        </div>
+
+                        <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-300 mb-2">الاسم الكامل *</label>
+                                    <input type="text" required placeholder="أحمد علي" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-300 mb-2">البريد الإلكتروني *</label>
+                                    <input type="email" required placeholder="ahmed@company.com" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-300 mb-2">رقم الهاتف / الواتساب</label>
+                                    <input type="tel" placeholder="+966 50 000 0000" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-300 mb-2">نوع الخدمة المطلوب</label>
+                                    <select class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-cyan-400 transition-colors">
+                                        <option>تطبيق واقع معزز (AR)</option>
+                                        <option>برمجة ونظام Unity مخصص</option>
+                                        <option>مشروع تعليمي تفاعلي</option>
+                                        <option>استشارة تقنية ومراجعة كود</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-300 mb-2">تفاصيل ونطاق المشروع *</label>
+                                <textarea rows="4" required placeholder="اكتب نبذة مختصرة عن أهداف مشروعك، والمنصات المطلوبة..." class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 text-black font-extrabold text-base shadow-neon-blue hover:brightness-110 transition-all">
+                                إرسال طلب الاستشارة المجانية
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-950 border-t border-slate-800/80 py-12 relative z-10 text-sm text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                
+                <div class="flex items-center gap-3">
+                    <span class="font-black text-xl text-white tracking-widest">ZED<span class="text-cyan-400">.COM</span></span>
+                    <span class="text-xs text-slate-500 border-r border-slate-800 pr-3 mr-3">جميع الحقوق محفوظة © 2026</span>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <a href="#" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-x-twitter text-lg"></i></a>
+                    <a href="#" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-linkedin text-lg"></i></a>
+                    <a href="#" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-github text-lg"></i></a>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Mobile Menu Drawer ---
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileDrawer.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileDrawer.classList.add('hidden');
+            });
+        });
+
+        // --- Counter Animation ---
+        const counters = document.querySelectorAll('.counter');
+        let animated = false;
+
+        window.addEventListener('scroll', () => {
+            const triggerBottom = window.innerHeight * 0.8;
+            counters.forEach(counter => {
+                const top = counter.getBoundingClientRect().top;
+                if(top < triggerBottom && !animated) {
+                    animated = true;
+                    counters.forEach(c => {
+                        const target = +c.getAttribute('data-target');
+                        let count = 0;
+                        const inc = target / 40;
+                        const update = () => {
+                            count += inc;
+                            if(count < target) {
+                                c.innerText = Math.ceil(count);
+                                setTimeout(update, 30);
+                            } else {
+                                c.innerText = target;
+                            }
+                        };
+                        update();
+                    });
+                }
+            });
+        });
+
+        // --- Hero Canvas Particles Network Animation ---
+        const heroCanvas = document.getElementById('hero-canvas');
+        const ctx = heroCanvas.getContext('2d');
+        let width, height, particles = [];
+
+        function resizeHeroCanvas() {
+            width = heroCanvas.width = heroCanvas.offsetWidth;
+            height = heroCanvas.height = heroCanvas.offsetHeight;
+        }
+        window.addEventListener('resize', resizeHeroCanvas);
+        resizeHeroCanvas();
+
+        for(let i = 0; i < 45; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.8,
+                vy: (Math.random() - 0.5) * 0.8,
+                radius: Math.random() * 2 + 1
+            });
+        }
+
+        function animateHeroCanvas() {
+            ctx.clearRect(0, 0, width, height);
+
+            for(let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if(p.x < 0 || p.x > width) p.vx *= -1;
+                if(p.y < 0 || p.y > height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#00F0FF';
+                ctx.fill();
+
+                for(let j = i + 1; j < particles.length; j++) {
+                    let p2 = particles[j];
+                    let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if(dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(0, 240, 255, ${1 - dist / 120 * 0.8})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateHeroCanvas);
+        }
+        animateHeroCanvas();
+
+        // --- Filterable Portfolio ---
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-cyan-500', 'text-black');
+                    b.classList.add('text-slate-400');
+                });
+                btn.classList.add('bg-cyan-500', 'text-black');
+                btn.classList.remove('text-slate-400');
+
+                const filter = btn.getAttribute('data-filter');
+                portfolioItems.forEach(item => {
+                    if(filter === 'all' || item.getAttribute('data-category') === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // --- Interactive 3D Wireframe Cube Canvas ---
+        const cubeCanvas = document.getElementById('interactive-cube-canvas');
+        const cctx = cubeCanvas.getContext('2d');
+        let cWidth, cHeight;
+        let strokeColor = '#00F0FF';
+
+        function resizeCubeCanvas() {
+            cWidth = cubeCanvas.width = cubeCanvas.offsetWidth;
+            cHeight = cubeCanvas.height = cubeCanvas.offsetHeight;
+        }
+        window.addEventListener('resize', resizeCubeCanvas);
+        resizeCubeCanvas();
+
+        // Color theme buttons
+        document.getElementById('btn-color-cyan').addEventListener('click', () => {
+            strokeColor = '#00F0FF';
+        });
+        document.getElementById('btn-color-purple').addEventListener('click', () => {
+            strokeColor = '#A855F7';
+        });
+
+        // 3D Cube Vertices
+        let angleX = 0.01;
+        let angleY = 0.01;
+        let isDragging = false;
+        let lastMouseX = 0, lastMouseY = 0;
+
+        cubeCanvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        });
+
+        window.addEventListener('mouseup', () => isDragging = false);
+
+        cubeCanvas.addEventListener('mousemove', (e) => {
+            if(!isDragging) return;
+            let dx = e.clientX - lastMouseX;
+            let dy = e.clientY - lastMouseY;
+            angleY += dx * 0.005;
+            angleX += dy * 0.005;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        });
+
+        // Touch support
+        cubeCanvas.addEventListener('touchstart', (e) => {
+            if(e.touches.length === 1) {
+                isDragging = true;
+                lastMouseX = e.touches[0].clientX;
+                lastMouseY = e.touches[0].clientY;
+            }
+        });
+        cubeCanvas.addEventListener('touchend', () => isDragging = false);
+        cubeCanvas.addEventListener('touchmove', (e) => {
+            if(!isDragging || e.touches.length !== 1) return;
+            let dx = e.touches[0].clientX - lastMouseX;
+            let dy = e.touches[0].clientY - lastMouseY;
+            angleY += dx * 0.005;
+            angleX += dy * 0.005;
+            lastMouseX = e.touches[0].clientX;
+            lastMouseY = e.touches[0].clientY;
+        });
+
+        const vertices = [
+            [-100, -100, -100], [100, -100, -100],
+            [100, 100, -100],  [-100, 100, -100],
+            [-100, -100, 100],  [100, -100, 100],
+            [100, 100, 100],   [-100, 100, 100]
+        ];
+
+        const edges = [
+            [0,1], [1,2], [2,3], [3,0],
+            [4,5], [5,6], [6,7], [7,4],
+            [0,4], [1,5], [2,6], [3,7]
+        ];
+
+        function project(x, y, z) {
+            let distance = 300;
+            let fov = distance / (distance + z);
+            return {
+                x: x * fov + cWidth / 2,
+                y: y * fov + cHeight / 2
+            };
+        }
+
+        function rotateX(pt, rad) {
+            let y = pt[1] * Math.cos(rad) - pt[2] * Math.sin(rad);
+            let z = pt[1] * Math.sin(rad) + pt[2] * Math.cos(rad);
+            return [pt[0], y, z];
+        }
+
+        function rotateY(pt, rad) {
+            let x = pt[0] * Math.cos(rad) + pt[2] * Math.sin(rad);
+            let z = -pt[0] * Math.sin(rad) + pt[2] * Math.cos(rad);
+            return [x, pt[1], z];
+        }
+
+        function renderCube() {
+            cctx.clearRect(0, 0, cWidth, cHeight);
+
+            if(!isDragging) {
+                angleX += 0.005;
+                angleY += 0.008;
+            }
+
+            let transformed = vertices.map(v => {
+                let r = rotateX(v, angleX);
+                r = rotateY(r, angleY);
+                return r;
+            });
+
+            // Draw Edges
+            cctx.strokeStyle = strokeColor;
+            cctx.lineWidth = 2;
+            cctx.shadowBlur = 15;
+            cctx.shadowColor = strokeColor;
+
+            edges.forEach(edge => {
+                let p1 = project(...transformed[edge[0]]);
+                let p2 = project(...transformed[edge[1]]);
+                cctx.beginPath();
+                cctx.moveTo(p1.x, p1.y);
+                cctx.lineTo(p2.x, p2.y);
+                cctx.stroke();
+            });
+
+            // Draw Nodes
+            transformed.forEach(pt => {
+                let p = project(...pt);
+                cctx.beginPath();
+                cctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                cctx.fillStyle = '#ffffff';
+                cctx.fill();
+            });
+
+            requestAnimationFrame(renderCube);
+        }
+        renderCube();
+
+        // --- Interactive Cost Calculator ---
+        function updateCalculator() {
+            let total = 0;
+            const typeValue = document.querySelector('input[name="project_type"]:checked').value;
+            total += parseInt(typeValue);
+
+            document.querySelectorAll('.calc-platform:checked').forEach(cb => {
+                total += parseInt(cb.value);
+            });
+
+            document.querySelectorAll('.calc-feature:checked').forEach(cb => {
+                total += parseInt(cb.value);
+            });
+
+            document.getElementById('calc-price').innerText = `$${total.toLocaleString()}`;
+            
+            let weeks = Math.ceil(total / 700);
+            document.getElementById('calc-time').innerText = `المدة المتوقعة: ${weeks} - ${weeks + 2} أسابيع عمل`;
+        }
+
+        document.querySelectorAll('#calc-form input').forEach(elem => {
+            elem.addEventListener('change', updateCalculator);
+        });
+        updateCalculator();
+
+        // --- Form Submission Handling ---
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const toast = document.getElementById('form-toast');
+            toast.classList.remove('hidden');
+            document.getElementById('contact-form').reset();
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 5000);
+        }
+
+        // --- Bilingual Internationalization Engine (AR / EN) ---
+        let currentLang = 'ar';
+
+        const translations = {
+            ar: {
+                nav_services: "الخدمات",
+                nav_portfolio: "معرض الأعمال",
+                nav_demo: "العرض التفاعلي",
+                nav_estimator: "حاسبة المشروع",
+                nav_why: "لماذا ZED؟",
+                nav_cta: "ابتدئ مشروعك",
+                lang_btn: "English",
+                mobile_lang_btn: "اللغة: English",
+                hero_badge: "المختبر البرمجي المتقدم لتقنيات Unity والواقع المعزز",
+                hero_title: `نُشكل المستقبل بـ <span class="text-gradient">تجارب واقع معزز (AR)</span><br class="hidden sm:inline"> وحلول Unity متكاملة للأعمال`,
+                hero_desc: `في <strong class="text-white">ZED.com</strong>، ندمج هندسة البرمجيات النظيفة (Clean Code) مع أحدث تقنيات المحاكاة التفاعلية لتطوير تطبيقات هاتفية، حلول تعليمية، وأنظمة تفاعلية مخصصة ترفع من القيمة السوقية لعلامتك التجارية.`,
+                hero_cta_primary: "طلب استشارة وتقييم مشروعك",
+                hero_cta_secondary: "تجربة النموذج التفاعلي",
+                stat_1: "+ مشروع AR & Unity منجز",
+                stat_2: "% جودة واستقرار الأكواد",
+                stat_3: "+ قطاع تجاري وتعيلمي",
+                stat_4: "حماية وأمان البيانات"
+            },
+            en: {
+                nav_services: "Services",
+                nav_portfolio: "Portfolio",
+                nav_demo: "Interactive Demo",
+                nav_estimator: "Cost Estimator",
+                nav_why: "Why ZED?",
+                nav_cta: "Start Project",
+                lang_btn: "العربية",
+                mobile_lang_btn: "Language: العربية",
+                hero_badge: "Advanced Software Lab for Unity & Augmented Reality",
+                hero_title: `Shaping the Future with <span class="text-gradient">Augmented Reality (AR)</span><br class="hidden sm:inline"> & Enterprise Unity Solutions`,
+                hero_desc: `At <strong class="text-white">ZED.com</strong>, we combine Clean Code architecture with cutting-edge interactive simulation to craft mobile apps, educational solutions, and custom interactive systems that boost your brand value.`,
+                hero_cta_primary: "Request a Consultation",
+                hero_cta_secondary: "Try Interactive Demo",
+                stat_1: "+ Delivered AR & Unity Projects",
+                stat_2: "% Code Quality & Stability",
+                stat_3: "+ Business & Education Sectors",
+                stat_4: "Data Security & Privacy"
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            
+            // Toggle HTML direction and lang
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+            // Update text buttons
+            document.getElementById('lang-btn-text').innerText = translations[currentLang].lang_btn;
+            document.getElementById('mobile-lang-btn-text').innerText = translations[currentLang].mobile_lang_btn;
+
+            // Update RTL arrows
+            const arrows = document.querySelectorAll('.rtl-arrow');
+            arrows.forEach(arrow => {
+                if (currentLang === 'en') {
+                    arrow.classList.remove('fa-arrow-left');
+                    arrow.classList.add('fa-arrow-right');
+                } else {
+                    arrow.classList.remove('fa-arrow-right');
+                    arrow.classList.add('fa-arrow-left');
+                }
+            });
+
+            // Update all elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(elem => {
+                const key = elem.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    elem.innerText = translations[currentLang][key];
+                }
+            });
+
+            // Update all elements with data-i18n-html
+            document.querySelectorAll('[data-i18n-html]').forEach(elem => {
+                const key = elem.getAttribute('data-i18n-html');
+                if (translations[currentLang][key]) {
+                    elem.innerHTML = translations[currentLang][key];
+                }
+            });
+        }
+    </script>
+</body>
+</html>
